@@ -1,9 +1,14 @@
+"use client";
+
+// app/page.tsx — Next.js Client Component
+// Styles: Tailwind (remember to configure tailwind.config.js, postcss.config.js, and import globals.css in app/layout.tsx)
+
 export default function GorillaTagSite() {
   // === Config ===
   const YOUTUBE_URL = "http://www.youtube.com/@TTTRileyvr"; // direct channel link
-  const MERCH_URL = "https://your-merch-store.com"; // TODO: replace with real merch store link
-  const FEATURED_VIDEOS = [
-    // TODO: replace with real Gorilla Tag video IDs from your channel
+  const MERCH_URL = "https://your-merch-store.com"; // replace with your real merch link
+  const FEATURED_VIDEOS: string[] = [
+    // Replace with real Gorilla Tag video IDs from your channel
     "dQw4w9WgXcQ",
     "oHg5SJYRHA0",
     "3GwjfUFyY6M",
@@ -91,7 +96,7 @@ function SiteHeader() {
   );
 }
 
-function Hero({ youtubeUrl, merchUrl }) {
+function Hero({ youtubeUrl, merchUrl }: { youtubeUrl: string; merchUrl: string }) {
   return (
     <section
       id="home"
@@ -138,7 +143,7 @@ function Hero({ youtubeUrl, merchUrl }) {
   );
 }
 
-function MascotDivider({ small = false }) {
+function MascotDivider({ small = false }: { small?: boolean }) {
   return (
     <div className={"mx-auto " + (small ? "my-10" : "my-16") + " flex items-center justify-center gap-2"}>
       <div className="h-px w-24 bg-blue-300" />
@@ -148,7 +153,7 @@ function MascotDivider({ small = false }) {
   );
 }
 
-function Section({ id, title, subtitle, children }) {
+function Section({ id, title, subtitle, children }: { id: string; title: string; subtitle?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-24">
       <h2 className="text-center text-3xl font-black text-blue-900">{title}</h2>
@@ -158,7 +163,7 @@ function Section({ id, title, subtitle, children }) {
   );
 }
 
-function VideoGrid({ videoIds }) {
+function VideoGrid({ videoIds }: { videoIds: string[] }) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {videoIds.map((id) => (
@@ -214,7 +219,7 @@ function Rules() {
     { title: "Tag Like a Legend!", text: "No cheating or glitching. If you tag, say ‘gg!’ and reset." },
     { title: "Keep It Clean, Keep It Loud!", text: "No swears, insults, or scary talk. Use indoor-voice volume." },
     { title: "Stay Safe, Stay Strong!", text: "Never share personal info. If something feels off, tell a parent." },
-  ];
+  ] as const;
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -234,7 +239,7 @@ function Rules() {
   );
 }
 
-function Footer({ merchUrl }) {
+function Footer({ merchUrl }: { merchUrl?: string }) {
   return (
     <footer className="mt-16 border-t border-blue-200 bg-white/70">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-slate-700 sm:flex-row sm:px-6 lg:px-8">
@@ -254,7 +259,7 @@ function Footer({ merchUrl }) {
 }
 
 /* --------------------- Cute visuals --------------------- */
-function GorillaLogo({ className = "h-8 w-8" }) {
+function GorillaLogo({ className = "h-8 w-8" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
       <defs>
@@ -305,6 +310,7 @@ function FloatingSnowflakes() {
 }
 
 /* ========================= Dev sanity checks (lightweight tests) ========================= */
+// These run only in the browser (client component) and won't break the page if they fail.
 if (typeof window !== "undefined") {
   try {
     console.assert(typeof SiteHeader === "function", "SiteHeader should be defined");
@@ -317,12 +323,10 @@ if (typeof window !== "undefined") {
     console.assert(typeof Footer === "function", "Footer should be defined");
     console.assert(typeof GorillaLogo === "function", "GorillaLogo should be defined");
 
-    // URL format checks
-    const isHttpUrl = (u) => /^https?:\/\//i.test(u);
+    const isHttpUrl = (u: string) => /^https?:\/\//i.test(u);
     console.assert(isHttpUrl("http://www.youtube.com/@TTTRileyvr"), "YouTube URL should be http(s)");
     console.assert(isHttpUrl("https://your-merch-store.com"), "Merch URL should be http(s)");
   } catch (e) {
-    // Don't crash the page if assertions fail
     console.warn("Dev sanity checks failed:", e);
   }
 }
