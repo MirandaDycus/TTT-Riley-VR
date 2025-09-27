@@ -1,0 +1,328 @@
+export default function GorillaTagSite() {
+  // === Config ===
+  const YOUTUBE_URL = "http://www.youtube.com/@TTTRileyvr"; // direct channel link
+  const MERCH_URL = "https://your-merch-store.com"; // TODO: replace with real merch store link
+  const FEATURED_VIDEOS = [
+    // TODO: replace with real Gorilla Tag video IDs from your channel
+    "dQw4w9WgXcQ",
+    "oHg5SJYRHA0",
+    "3GwjfUFyY6M",
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600 text-slate-900">
+      <SiteHeader />
+
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Hero youtubeUrl={YOUTUBE_URL} merchUrl={MERCH_URL} />
+
+        <MascotDivider />
+
+        <Section
+          id="videos"
+          title="Latest Videos"
+          subtitle="Watch my newest Gorilla Tag adventures! (No swearing. No scary stuff.)"
+        >
+          <VideoGrid videoIds={FEATURED_VIDEOS} />
+          <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <a
+              href={YOUTUBE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block rounded-2xl bg-blue-700 px-6 py-3 text-white shadow hover:shadow-lg hover:opacity-90"
+            >
+              Visit My YouTube Channel
+            </a>
+            <a
+              href={MERCH_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block rounded-2xl bg-white px-6 py-3 font-semibold text-blue-700 shadow ring-1 ring-blue-300 hover:bg-blue-50"
+            >
+              Shop My Merch
+            </a>
+          </div>
+        </Section>
+
+        <MascotDivider small />
+
+        <Section id="about" title="About Me" subtitle="Who's ready to tag?!">
+          <About />
+        </Section>
+
+        <MascotDivider small />
+
+        <Section id="rules" title="Community Rules" subtitle="Let's go wild but play it fair!">
+          <Rules />
+        </Section>
+      </main>
+
+      <Footer merchUrl={MERCH_URL} />
+    </div>
+  );
+}
+
+/* ========================= Components ========================= */
+function SiteHeader() {
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-blue-200 bg-white/80 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <a href="#home" className="flex items-center gap-2">
+          <GorillaLogo className="h-8 w-8" />
+          <span className="font-black tracking-tight">TTTRileyVR</span>
+        </a>
+        <nav className="hidden gap-6 sm:flex">
+          {[
+            ["Videos", "#videos"],
+            ["About", "#about"],
+            ["Rules", "#rules"],
+          ].map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              className="rounded-xl px-3 py-2 text-sm font-medium hover:bg-blue-100"
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function Hero({ youtubeUrl, merchUrl }) {
+  return (
+    <section
+      id="home"
+      className="relative isolate overflow-hidden rounded-3xl bg-blue-300/60 px-6 py-14 shadow sm:py-20"
+    >
+      <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto mb-3 w-fit rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800 ring-1 ring-blue-500">
+          Who's ready to tag?!
+        </div>
+        <h1 className="text-4xl font-black sm:text-5xl">
+          Welcome to <span className="text-blue-800">TTTRileyVR</span>!
+        </h1>
+        <p className="mt-4 text-lg text-slate-800">
+          I stream and post <strong>wholesome, high-energy</strong> Gorilla Tag videos. Clean language, friendly vibes,
+          and easy-to-follow fun for ages 6+.
+        </p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href="#videos"
+            className="w-full rounded-2xl bg-blue-700 px-6 py-3 text-center font-semibold text-white shadow hover:shadow-lg sm:w-auto"
+          >
+            Watch Videos
+          </a>
+          <a
+            href={youtubeUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full rounded-2xl bg-white px-6 py-3 text-center font-semibold text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50 sm:w-auto"
+          >
+            YouTube Channel
+          </a>
+          <a
+            href={merchUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full rounded-2xl bg-white px-6 py-3 text-center font-semibold text-blue-700 ring-1 ring-blue-300 hover:bg-blue-50 sm:w-auto"
+          >
+            Shop Merch
+          </a>
+        </div>
+      </div>
+      <FloatingSnowflakes />
+    </section>
+  );
+}
+
+function MascotDivider({ small = false }) {
+  return (
+    <div className={"mx-auto " + (small ? "my-10" : "my-16") + " flex items-center justify-center gap-2"}>
+      <div className="h-px w-24 bg-blue-300" />
+      <GorillaLogo className="h-8 w-8 opacity-80 text-blue-700" />
+      <div className="h-px w-24 bg-blue-300" />
+    </div>
+  );
+}
+
+function Section({ id, title, subtitle, children }) {
+  return (
+    <section id={id} className="scroll-mt-24">
+      <h2 className="text-center text-3xl font-black text-blue-900">{title}</h2>
+      {subtitle && <p className="mt-2 text-center text-slate-800">{subtitle}</p>}
+      <div className="mt-8">{children}</div>
+    </section>
+  );
+}
+
+function VideoGrid({ videoIds }) {
+  return (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {videoIds.map((id) => (
+        <div key={id} className="overflow-hidden rounded-2xl bg-white shadow ring-1 ring-blue-200">
+          <div className="aspect-video w-full">
+            <iframe
+              className="h-full w-full"
+              src={`https://www.youtube.com/embed/${id}`}
+              title="Gorilla Tag video"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+          <div className="p-4">
+            <p className="line-clamp-2 font-semibold">Gorilla Tag Gameplay</p>
+            <p className="mt-1 text-sm text-slate-600">Fast, friendly, and funny rounds with the squad.</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div className="grid grid-cols-1 items-center gap-8 sm:grid-cols-2">
+      <div className="order-2 sm:order-1">
+        <h3 className="text-xl font-extrabold text-blue-800">Yo! I’m Riley 🐵 Let’s Go!</h3>
+        <p className="mt-3 text-slate-800">
+          I love parkour, bananas, and being kind. On this channel, we play Gorilla Tag with
+          <strong> good sportsmanship</strong>, celebrate big plays, and keep jokes clean. If a game stops feeling fun,
+          we take a break, drink water, and try again!
+        </p>
+        <ul className="mt-4 list-inside list-disc text-slate-800">
+          <li>No swearing or bullying.</li>
+          <li>Respect parents’ screen-time rules.</li>
+          <li>Protect your privacy: no last names, schools, or addresses.</li>
+        </ul>
+      </div>
+      <div className="order-1 sm:order-2 flex justify-center">
+        <div className="relative isolate">
+          <GorillaBadge />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Rules() {
+  const rules = [
+    { title: "Bring the Hype!", text: "Cheer for others, use friendly words, and take turns." },
+    { title: "Tag Like a Legend!", text: "No cheating or glitching. If you tag, say ‘gg!’ and reset." },
+    { title: "Keep It Clean, Keep It Loud!", text: "No swears, insults, or scary talk. Use indoor-voice volume." },
+    { title: "Stay Safe, Stay Strong!", text: "Never share personal info. If something feels off, tell a parent." },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {rules.map((r) => (
+        <div key={r.title} className="rounded-2xl bg-white p-5 shadow ring-1 ring-blue-200">
+          <p className="text-lg font-extrabold text-blue-700">{r.title}</p>
+          <p className="mt-1 text-slate-800">{r.text}</p>
+        </div>
+      ))}
+      <div className="rounded-2xl bg-blue-50 p-5 ring-1 ring-blue-200">
+        <p className="font-bold">Moderation Note</p>
+        <p className="mt-1 text-sm text-blue-900">
+          Voice chat is monitored. Anyone using bad language or harassment will be muted or kicked.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Footer({ merchUrl }) {
+  return (
+    <footer className="mt-16 border-t border-blue-200 bg-white/70">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-slate-700 sm:flex-row sm:px-6 lg:px-8">
+        <p>© {new Date().getFullYear()} TTTRileyVR · Keep tagging, keep winning!</p>
+        <div className="flex items-center gap-4">
+          <a href="#about" className="hover:text-slate-900">About</a>
+          <a href="#rules" className="hover:text-slate-900">Rules</a>
+          {merchUrl && (
+            <a href={merchUrl} target="_blank" rel="noreferrer" className="font-semibold text-blue-700 hover:underline">
+              Merch
+            </a>
+          )}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* --------------------- Cute visuals --------------------- */
+function GorillaLogo({ className = "h-8 w-8" }) {
+  return (
+    <svg viewBox="0 0 64 64" className={className} aria-hidden>
+      <defs>
+        <linearGradient id="gBlue" x1="0" x2="1">
+          <stop offset="0%" stopColor="#93c5fd" />
+          <stop offset="100%" stopColor="#1d4ed8" />
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#gBlue)" />
+      <circle cx="32" cy="30" r="12" fill="#0f172a" />
+      <rect x="20" y="36" width="24" height="10" rx="5" fill="#0f172a" />
+      <circle cx="28" cy="28" r="2" fill="#fff" />
+      <circle cx="36" cy="28" r="2" fill="#fff" />
+    </svg>
+  );
+}
+
+function GorillaBadge() {
+  return (
+    <div className="relative mx-auto grid place-items-center rounded-3xl bg-gradient-to-br from-blue-300 to-blue-600 p-6 shadow-xl ring-1 ring-blue-400">
+      <GorillaLogo className="h-28 w-28" />
+      <p className="mt-3 text-center text-sm font-bold uppercase tracking-wide text-blue-900">TTTRileyVR</p>
+      <p className="text-center text-xs text-blue-900/80">Gorilla Tag Creator</p>
+      <div className="pointer-events-none absolute -inset-1 -z-10 animate-pulse rounded-3xl bg-blue-400/20" />
+    </div>
+  );
+}
+
+function FloatingSnowflakes() {
+  const snowflake = (
+    <svg viewBox="0 0 64 64" className="h-6 w-6" aria-hidden>
+      <path
+        d="M32 8v48M8 32h48M16 16l32 32M48 16L16 48"
+        stroke="#1e3a8a"
+        strokeWidth="3"
+        fill="none"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+  return (
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute -right-4 top-6 animate-bounce opacity-40">{snowflake}</div>
+      <div className="absolute bottom-6 left-8 animate-bounce opacity-30" style={{ animationDelay: "200ms" }}>{snowflake}</div>
+      <div className="absolute right-20 bottom-8 animate-bounce opacity-30" style={{ animationDelay: "400ms" }}>{snowflake}</div>
+    </div>
+  );
+}
+
+/* ========================= Dev sanity checks (lightweight tests) ========================= */
+if (typeof window !== "undefined") {
+  try {
+    console.assert(typeof SiteHeader === "function", "SiteHeader should be defined");
+    console.assert(typeof Hero === "function", "Hero should be defined");
+    console.assert(typeof Section === "function", "Section should be defined");
+    console.assert(typeof VideoGrid === "function", "VideoGrid should be defined");
+    console.assert(typeof About === "function", "About should be defined");
+    console.assert(typeof Rules === "function", "Rules should be defined");
+    console.assert(typeof FloatingSnowflakes === "function", "FloatingSnowflakes should be defined");
+    console.assert(typeof Footer === "function", "Footer should be defined");
+    console.assert(typeof GorillaLogo === "function", "GorillaLogo should be defined");
+
+    // URL format checks
+    const isHttpUrl = (u) => /^https?:\/\//i.test(u);
+    console.assert(isHttpUrl("http://www.youtube.com/@TTTRileyvr"), "YouTube URL should be http(s)");
+    console.assert(isHttpUrl("https://your-merch-store.com"), "Merch URL should be http(s)");
+  } catch (e) {
+    // Don't crash the page if assertions fail
+    console.warn("Dev sanity checks failed:", e);
+  }
+}
